@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Додавання позиції — Адмін-панель</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #050505;
+            --black-light: #0c0c0c;
+            --gold: #d4af37;
+            --gold-light: #f4d76b;
+            --gold-dark: #927019;
+            --text: #f5f0df;
+            --muted: #969185;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            color: var(--text);
+
+            background:
+                radial-gradient(
+                    circle at 50% 8%,
+                    rgba(212, 175, 55, 0.08),
+                    transparent 38%
+                ),
+                #050505;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================
+           БОКОВЫЕ ЗОЛОТЫЕ ЛИНИИ
+        ========================================= */
+
+        body::before,
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            top: 0;
+            bottom: 0;
+
+            width: 1px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    transparent,
+                    rgba(212, 175, 55, 0.3),
+                    rgba(212, 175, 55, 0.08),
+                    rgba(212, 175, 55, 0.3),
+                    transparent
+                );
+
+            pointer-events: none;
+
+            z-index: 100;
+        }
+
+        body::before {
+            left: 24px;
+        }
+
+        body::after {
+            right: 24px;
+        }
+
+
+        /* =========================================
+           ОСНОВНОЙ КОНТЕЙНЕР
+        ========================================= */
+
+        .admin-page {
+
+            width: min(850px, 90%);
+
+            margin:
+                60px auto 90px;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .page-header {
+
+            text-align: center;
+
+            margin-bottom: 38px;
+        }
+
+        .small-title {
+
+            color: var(--gold);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 10px;
+
+            font-weight: bold;
+
+            letter-spacing: 4px;
+
+            text-transform: uppercase;
+        }
+
+        .page-header h1 {
+
+            margin-top: 15px;
+
+            color: var(--text);
+
+            font-size:
+                clamp(34px, 5vw, 48px);
+
+            font-weight: normal;
+        }
+
+        .page-header p {
+
+            margin-top: 12px;
+
+            color: var(--muted);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           GOLD LINE
+        ========================================= */
+
+        .gold-line {
+
+            position: relative;
+
+            width: 200px;
+
+            height: 1px;
+
+            margin: 23px auto;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold),
+                    transparent
+                );
+        }
+
+        .gold-line::before,
+        .gold-line::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 50%;
+
+            width: 6px;
+            height: 6px;
+
+            border:
+                1px solid
+                var(--gold);
+
+            transform:
+                translateY(-50%)
+                rotate(45deg);
+        }
+
+        .gold-line::before {
+            left: 25px;
+        }
+
+        .gold-line::after {
+            right: 25px;
+        }
+
+
+        /* =========================================
+           FORM CARD
+        ========================================= */
+
+        .form-card {
+
+            position: relative;
+
+            padding: 38px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #11110f,
+                    #080808
+                );
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.35);
+
+            box-shadow:
+                0 25px 65px
+                rgba(0, 0, 0, 0.65);
+        }
+
+
+        .form-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 10%;
+            right: 10%;
+
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold),
+                    transparent
+                );
+        }
+
+
+        /* =========================================
+           FORM
+        ========================================= */
+
+        form {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 18px;
+        }
+
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+
+        .form-group label {
+
+            color: var(--gold);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =========================================
+           INPUTS
+        ========================================= */
+
+        input,
+        textarea {
+
+            width: 100%;
+
+            padding: 14px 16px;
+
+            color: var(--text);
+
+            background:
+                #080808;
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.25);
+
+            outline: none;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 13px;
+
+            transition: 0.3s ease;
+        }
+
+
+        input::placeholder,
+        textarea::placeholder {
+
+            color: #68645b;
+        }
+
+
+        input:focus,
+        textarea:focus {
+
+            border-color:
+                var(--gold);
+
+            background:
+                #0b0b0b;
+
+            box-shadow:
+                0 0 18px
+                rgba(212, 175, 55, 0.08);
+        }
+
+
+        textarea {
+
+            min-height: 110px;
+
+            resize: vertical;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================================
+           FILE INPUT
+        ========================================= */
+
+        .file-input {
+
+            padding: 11px;
+
+            cursor: pointer;
+        }
+
+        .file-input::file-selector-button {
+
+            margin-right: 12px;
+
+            padding: 9px 14px;
+
+            color: #050505;
+
+            background:
+                var(--gold);
+
+            border: none;
+
+            cursor: pointer;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            transition: 0.3s ease;
+        }
+
+        .file-input::file-selector-button:hover {
+
+            background:
+                var(--gold-light);
+        }
+
+
+        /* =========================================
+           ЦЕНА + ВЕС
+        ========================================= */
+
+        .number-row {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 18px;
+        }
+
+
+        /* =========================================
+           BUTTON
+        ========================================= */
+
+        .submit-button {
+
+            width: 100%;
+
+            margin-top: 8px;
+
+            padding: 16px 20px;
+
+            color: #050505;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--gold-dark),
+                    var(--gold-light),
+                    var(--gold-dark)
+                );
+
+            border:
+                1px solid
+                var(--gold-light);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 1.8px;
+
+            cursor: pointer;
+
+            transition: 0.3s ease;
+        }
+
+
+        .submit-button:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 0 25px
+                rgba(212, 175, 55, 0.25);
+        }
+
+
+        .submit-button:active {
+
+            transform:
+                translateY(0);
+        }
+
+
+        /* =========================================
+           ПОДСКАЗКА
+        ========================================= */
+
+        .hint {
+
+            margin-top: 20px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid
+                rgba(212, 175, 55, 0.15);
+
+            color: #68645b;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+            text-align: center;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 650px) {
+
+            body::before {
+                left: 10px;
+            }
+
+            body::after {
+                right: 10px;
+            }
+
+            .admin-page {
+
+                width: 90%;
+
+                margin-top: 40px;
+            }
+
+            .form-card {
+
+                padding: 25px 20px;
+            }
+
+            .number-row {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+
+<main class="admin-page">
+
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="page-header">
+
+        <div class="small-title">
+            Адміністративна панель
+        </div>
+
+        <h1>
+            Додавання позиції
+        </h1>
+
+        <div class="gold-line"></div>
+
+        <p>
+            Додайте нову страву до меню ресторану
+        </p>
+
+    </header>
+
+
+    <!-- =====================================
+         FORM
+    ====================================== -->
+
+    <section class="form-card">
+
+        <form
+            method="post"
+            enctype="multipart/form-data"
+        >
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token }}"
+            >
+
+
+            <!-- НАЗВА -->
+
+            <div class="form-group">
+
+                <label for="name">
+                    НАЗВА ПОЗИЦІЇ
+                </label>
+
+                <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    placeholder="Наприклад: Мусака по-грецьки"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ЗОБРАЖЕННЯ -->
+
+            <div class="form-group">
+
+                <label for="img">
+                    ФОТО СТРАВИ
+                </label>
+
+                <input
+                    id="img"
+                    class="file-input"
+                    type="file"
+                    name="img"
+                    accept="image/*"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ИНГРЕДИЕНТЫ -->
+
+            <div class="form-group">
+
+                <label for="ingredients">
+                    ІНГРЕДІЄНТИ
+                </label>
+
+                <textarea
+                    id="ingredients"
+                    name="ingredients"
+                    placeholder="Напишіть основні інгредієнти страви..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- ОПИСАНИЕ -->
+
+            <div class="form-group">
+
+                <label for="description">
+                    ОПИС СТРАВИ
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="Детальний опис страви..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- ЦЕНА + ВЕС -->
+
+            <div class="number-row">
+
+
+                <div class="form-group">
+
+                    <label for="price">
+                        ЦІНА · ГРН
+                    </label>
+
+                    <input
+                        id="price"
+                        type="number"
+                        name="price"
+                        placeholder="250"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="weight">
+                        ВАГА · Г
+                    </label>
+
+                    <input
+                        id="weight"
+                        type="number"
+                        name="weight"
+                        placeholder="300"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="submit-button"
+            >
+                ✦ &nbsp; ДОДАТИ ПОЗИЦІЮ ДО МЕНЮ
+            </button>
+
+
+        </form>
+
+
+        <div class="hint">
+            Заповніть усі поля та виберіть якісне зображення страви.
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+</html>

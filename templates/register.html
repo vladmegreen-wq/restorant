@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Реєстрація — Жемчужина Еґейського моря</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #050505;
+            --gold: #d4af37;
+            --gold-light: #f4d76b;
+            --gold-dark: #927019;
+            --text: #f5f0df;
+            --muted: #969185;
+        }
+
+        body {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(212, 175, 55, 0.08),
+                    transparent 38%
+                ),
+                #050505;
+
+            color: var(--text);
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================
+           БОКОВЫЕ ЗОЛОТЫЕ ЛИНИИ
+        ========================================= */
+
+        body::before,
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            top: 0;
+            bottom: 0;
+
+            width: 1px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    transparent,
+                    rgba(212, 175, 55, 0.35),
+                    rgba(212, 175, 55, 0.08),
+                    rgba(212, 175, 55, 0.35),
+                    transparent
+                );
+
+            pointer-events: none;
+        }
+
+        body::before {
+            left: 24px;
+        }
+
+        body::after {
+            right: 24px;
+        }
+
+
+        /* =========================================
+           ДЕКОРАТИВНЫЕ КРУГИ
+        ========================================= */
+
+        .circle-left {
+
+            position: fixed;
+
+            width: 520px;
+            height: 520px;
+
+            left: -300px;
+            top: -250px;
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.14);
+
+            border-radius: 50%;
+
+            pointer-events: none;
+        }
+
+        .circle-right {
+
+            position: fixed;
+
+            width: 600px;
+            height: 600px;
+
+            right: -350px;
+            bottom: -330px;
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.12);
+
+            border-radius: 50%;
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================
+           REGISTRATION CONTAINER
+        ========================================= */
+
+        .register-container {
+
+            position: relative;
+
+            z-index: 5;
+
+            width: min(450px, 88%);
+
+            padding: 42px 42px;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(17, 17, 15, 0.98),
+                    rgba(7, 7, 7, 0.98)
+                );
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.38);
+
+            box-shadow:
+                0 25px 70px
+                rgba(0, 0, 0, 0.7),
+
+                0 0 35px
+                rgba(212, 175, 55, 0.05);
+        }
+
+
+        .register-container::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: -1px;
+
+            left: 12%;
+            right: 12%;
+
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold),
+                    transparent
+                );
+        }
+
+
+        /* =========================================
+           ЛОГО
+        ========================================= */
+
+        .logo {
+
+            color: var(--text);
+
+            font-size: 19px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+        }
+
+        .logo-symbol {
+
+            color: var(--gold);
+
+            margin-right: 7px;
+        }
+
+        .logo-gold {
+
+            color: var(--gold);
+        }
+
+
+        /* =========================================
+           ЗАГОЛОВОК
+        ========================================= */
+
+        .register-container h1 {
+
+            margin-top: 27px;
+
+            color: var(--text);
+
+            font-size: 36px;
+
+            font-weight: normal;
+        }
+
+
+        .subtitle {
+
+            margin-top: 10px;
+
+            color: var(--muted);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           GOLD LINE
+        ========================================= */
+
+        .gold-line {
+
+            position: relative;
+
+            width: 180px;
+
+            height: 1px;
+
+            margin: 22px auto 28px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold),
+                    transparent
+                );
+        }
+
+        .gold-line::before,
+        .gold-line::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 50%;
+
+            width: 6px;
+
+            height: 6px;
+
+            border:
+                1px solid
+                var(--gold);
+
+            transform:
+                translateY(-50%)
+                rotate(45deg);
+        }
+
+        .gold-line::before {
+            left: 25px;
+        }
+
+        .gold-line::after {
+            right: 25px;
+        }
+
+
+        /* =========================================
+           FLASH MESSAGE
+        ========================================= */
+
+        .alert {
+
+            margin-bottom: 18px;
+
+            padding: 12px 15px;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+            border: 1px solid;
+        }
+
+        .alert-danger {
+
+            color: #e8a39c;
+
+            background:
+                rgba(184, 92, 82, 0.08);
+
+            border-color:
+                rgba(184, 92, 82, 0.45);
+        }
+
+        .alert-success {
+
+            color: #d8c477;
+
+            background:
+                rgba(212, 175, 55, 0.06);
+
+            border-color:
+                rgba(212, 175, 55, 0.35);
+        }
+
+
+        /* =========================================
+           FORM
+        ========================================= */
+
+        form {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+        }
+
+
+        /* =========================================
+           INPUTS
+        ========================================= */
+
+        input {
+
+            width: 100%;
+
+            padding: 15px 16px;
+
+            color: var(--text);
+
+            background: #080808;
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.25);
+
+            outline: none;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 13px;
+
+            transition: 0.3s ease;
+        }
+
+        input::placeholder {
+
+            color: #68645b;
+        }
+
+        input:focus {
+
+            border-color:
+                var(--gold);
+
+            background: #0b0b0b;
+
+            box-shadow:
+                0 0 18px
+                rgba(212, 175, 55, 0.08);
+        }
+
+
+        /* =========================================
+           BUTTON
+        ========================================= */
+
+        button {
+
+            width: 100%;
+
+            margin-top: 8px;
+
+            padding: 15px;
+
+            border:
+                1px solid
+                var(--gold-light);
+
+            color: #050505;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--gold-dark),
+                    var(--gold-light),
+                    var(--gold-dark)
+                );
+
+            font-family: Arial, sans-serif;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            letter-spacing: 1.7px;
+
+            cursor: pointer;
+
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 0 25px
+                rgba(212, 175, 55, 0.25);
+        }
+
+        button:active {
+
+            transform: translateY(0);
+        }
+
+
+        /* =========================================
+           LOGIN LINK
+        ========================================= */
+
+        .login-link {
+
+            display: inline-block;
+
+            margin-top: 24px;
+
+            color: var(--muted);
+
+            text-decoration: none;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 12px;
+
+            transition: 0.3s ease;
+        }
+
+        .login-link span {
+
+            color: var(--gold);
+        }
+
+        .login-link:hover {
+
+            color: var(--text);
+        }
+
+
+        /* =========================================
+           HOME
+        ========================================= */
+
+        .back-home {
+
+            display: block;
+
+            margin-top: 18px;
+
+            color: #625f57;
+
+            text-decoration: none;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            transition: 0.3s ease;
+        }
+
+        .back-home:hover {
+
+            color: var(--gold);
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 600px) {
+
+            body::before {
+                left: 10px;
+            }
+
+            body::after {
+                right: 10px;
+            }
+
+            .register-container {
+
+                padding:
+                    35px 25px;
+            }
+
+            .register-container h1 {
+
+                font-size: 31px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<div class="circle-left"></div>
+<div class="circle-right"></div>
+
+
+<div class="register-container">
+
+
+    <!-- ЛОГО -->
+
+    <div class="logo">
+
+        <span class="logo-symbol">
+            ✦
+        </span>
+
+        Жемчужина
+
+        <span class="logo-gold">
+            Эгейского моря
+        </span>
+
+    </div>
+
+
+    <!-- ЗАГОЛОВОК -->
+
+    <h1>
+        Реєстрація
+    </h1>
+
+
+    <p class="subtitle">
+        Створіть свій акаунт у нашому ресторані
+    </p>
+
+
+    <div class="gold-line"></div>
+
+
+    <!-- FLASH MESSAGE -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% set category, message = messages[0] %}
+
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- FORM -->
+
+    <form
+        action="/register"
+        method="post"
+    >
+
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token }}"
+        >
+
+
+        <input
+            type="text"
+            name="nickname"
+            placeholder="Nickname"
+            autocomplete="username"
+            required
+        >
+
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            autocomplete="email"
+            required
+        >
+
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            autocomplete="new-password"
+            required
+        >
+
+
+        <button type="submit">
+            СТВОРИТИ АКАУНТ
+        </button>
+
+    </form>
+
+
+    <!-- LOGIN -->
+
+    <a
+        href="{{ url_for('login') }}"
+        class="login-link"
+    >
+
+        Вже маєте акаунт?
+
+        <span>
+            Увійти
+        </span>
+
+    </a>
+
+
+    <!-- HOME -->
+
+    <a
+        href="{{ url_for('home') }}"
+        class="back-home"
+    >
+
+        ← Повернутися на головну
+
+    </a>
+
+
+</div>
+
+
+</body>
+</html>

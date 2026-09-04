@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Деталі замовлення №{{ order.id }}</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #050505;
+            --black-light: #0b0b0b;
+            --gold: #d4af37;
+            --gold-light: #f4d76b;
+            --gold-dark: #927019;
+            --text: #f5f0df;
+            --muted: #969185;
+            --red: #b85c52;
+            --red-light: #e09a91;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+
+            color: var(--text);
+
+            background:
+                radial-gradient(
+                    circle at 50% 10%,
+                    rgba(212, 175, 55, 0.08),
+                    transparent 38%
+                ),
+                #050505;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================
+           БОКОВЫЕ ЗОЛОТЫЕ ЛИНИИ
+        ========================================= */
+
+        body::before,
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            top: 0;
+            bottom: 0;
+
+            width: 1px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    transparent,
+                    rgba(212, 175, 55, 0.3),
+                    rgba(212, 175, 55, 0.08),
+                    rgba(212, 175, 55, 0.3),
+                    transparent
+                );
+
+            pointer-events: none;
+
+            z-index: 100;
+        }
+
+        body::before {
+            left: 24px;
+        }
+
+        body::after {
+            right: 24px;
+        }
+
+
+        /* =========================================
+           ОСНОВНОЙ КОНТЕЙНЕР
+        ========================================= */
+
+        .order-page {
+
+            width: min(850px, 90%);
+
+            margin:
+                70px auto 90px;
+        }
+
+
+        /* =========================================
+           ЗАГОЛОВОК
+        ========================================= */
+
+        .order-header {
+
+            text-align: center;
+
+            margin-bottom: 40px;
+        }
+
+        .small-title {
+
+            color: var(--gold);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 10px;
+
+            font-weight: bold;
+
+            letter-spacing: 4px;
+
+            text-transform: uppercase;
+        }
+
+        .order-header h1 {
+
+            margin-top: 15px;
+
+            color: var(--text);
+
+            font-size:
+                clamp(32px, 5vw, 48px);
+
+            font-weight: normal;
+        }
+
+        .order-header p {
+
+            margin-top: 12px;
+
+            color: var(--muted);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           ЗОЛОТАЯ ЛИНИЯ
+        ========================================= */
+
+        .gold-line {
+
+            position: relative;
+
+            width: 190px;
+
+            height: 1px;
+
+            margin: 23px auto;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold),
+                    transparent
+                );
+        }
+
+        .gold-line::before,
+        .gold-line::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 50%;
+
+            width: 6px;
+            height: 6px;
+
+            border:
+                1px solid
+                var(--gold);
+
+            transform:
+                translateY(-50%)
+                rotate(45deg);
+        }
+
+        .gold-line::before {
+            left: 25px;
+        }
+
+        .gold-line::after {
+            right: 25px;
+        }
+
+
+        /* =========================================
+           КАРТОЧКА ЗАКАЗА
+        ========================================= */
+
+        .order-card {
+
+            position: relative;
+
+            padding: 38px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #11110f,
+                    #080808
+                );
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.35);
+
+            box-shadow:
+                0 25px 65px
+                rgba(0, 0, 0, 0.65);
+        }
+
+
+        .order-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 10%;
+            right: 10%;
+
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold),
+                    transparent
+                );
+        }
+
+
+        /* =========================================
+           НОМЕР ЗАКАЗА
+        ========================================= */
+
+        .order-number {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding-bottom: 22px;
+
+            border-bottom:
+                1px solid
+                rgba(212, 175, 55, 0.18);
+        }
+
+        .order-number span:first-child {
+
+            color: var(--muted);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 12px;
+
+            letter-spacing: 1px;
+        }
+
+        .order-number strong {
+
+            color: var(--gold-light);
+
+            font-size: 20px;
+        }
+
+
+        /* =========================================
+           СПИСОК ПОЗИЦИЙ
+        ========================================= */
+
+        .section-title {
+
+            margin-top: 30px;
+
+            margin-bottom: 18px;
+
+            color: var(--gold);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .order-list {
+
+            list-style: none;
+        }
+
+
+        .order-item {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 17px 0;
+
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, 0.06);
+
+            font-family: Arial, sans-serif;
+        }
+
+        .order-item:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .dish-name {
+
+            color: var(--text);
+
+            font-size: 14px;
+        }
+
+        .quantity {
+
+            color: var(--gold);
+
+            font-size: 13px;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+           ИНФОРМАЦИЯ О ЗАКАЗЕ
+        ========================================= */
+
+        .order-info {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 15px;
+
+            margin-top: 25px;
+        }
+
+
+        .info-box {
+
+            padding: 20px;
+
+            background:
+                rgba(212, 175, 55, 0.025);
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.15);
+        }
+
+
+        .info-label {
+
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: var(--muted);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 10px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        .info-value {
+
+            color: var(--text);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           ИТОГО
+        ========================================= */
+
+        .total {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-top: 30px;
+
+            padding:
+                25px 0;
+
+            border-top:
+                1px solid
+                rgba(212, 175, 55, 0.25);
+
+            border-bottom:
+                1px solid
+                rgba(212, 175, 55, 0.25);
+        }
+
+        .total-label {
+
+            color: var(--muted);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 12px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .total-price {
+
+            color: var(--gold-light);
+
+            font-size: 29px;
+
+            font-weight: bold;
+        }
+
+        .currency {
+
+            color: var(--gold);
+
+            font-size: 15px;
+        }
+
+
+        /* =========================================
+           КНОПКА ОТМЕНЫ
+        ========================================= */
+
+        .cancel-form {
+
+            margin-top: 30px;
+        }
+
+
+        .cancel-button {
+
+            width: 100%;
+
+            padding: 14px 20px;
+
+            color: var(--red-light);
+
+            background:
+                rgba(184, 92, 82, 0.04);
+
+            border:
+                1px solid
+                rgba(184, 92, 82, 0.45);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 1.5px;
+
+            cursor: pointer;
+
+            transition: 0.3s ease;
+        }
+
+        .cancel-button:hover {
+
+            color: #050505;
+
+            background: var(--red-light);
+
+            border-color: var(--red-light);
+
+            box-shadow:
+                0 0 20px
+                rgba(184, 92, 82, 0.15);
+        }
+
+
+        /* =========================================
+           FOOTER / НАЗАД
+        ========================================= */
+
+        .back-link {
+
+            display: block;
+
+            margin-top: 25px;
+
+            text-align: center;
+
+            color: #625f57;
+
+            text-decoration: none;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            transition: 0.3s ease;
+        }
+
+        .back-link:hover {
+
+            color: var(--gold);
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 650px) {
+
+            body::before {
+                left: 10px;
+            }
+
+            body::after {
+                right: 10px;
+            }
+
+            .order-page {
+
+                width: 90%;
+
+                margin-top: 40px;
+            }
+
+            .order-card {
+
+                padding: 25px 20px;
+            }
+
+            .order-info {
+
+                grid-template-columns: 1fr;
+            }
+
+            .order-number {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 8px;
+            }
+
+            .total {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 10px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+
+
+<main class="order-page">
+
+
+    <!-- =========================================
+         ЗАГОЛОВОК
+    ========================================= -->
+
+    <header class="order-header">
+
+        <div class="small-title">
+            Жемчужина Еґейського моря
+        </div>
+
+        <h1>
+            Деталі замовлення
+        </h1>
+
+        <div class="gold-line"></div>
+
+        <p>
+            Дякуємо, що обрали наш ресторан
+        </p>
+
+    </header>
+
+
+    <!-- =========================================
+         КАРТОЧКА
+    ========================================= -->
+
+    <section class="order-card">
+
+
+        <!-- НОМЕР -->
+
+        <div class="order-number">
+
+            <span>
+                Номер замовлення
+            </span>
+
+            <strong>
+                №{{ order.id }}
+            </strong>
+
+        </div>
+
+
+        <!-- ПОЗИЦИИ -->
+
+        <div class="section-title">
+            Перелік позицій
+        </div>
+
+
+        <ul class="order-list">
+
+            {% for name, quantity in order.order_list.items() %}
+
+                <li class="order-item">
+
+                    <span class="dish-name">
+                        {{ name }}
+                    </span>
+
+                    <span class="quantity">
+                        × {{ quantity }}
+                    </span>
+
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <!-- ИНФОРМАЦИЯ -->
+
+        <div class="order-info">
+
+
+            <div class="info-box">
+
+                <span class="info-label">
+                    Дата та час
+                </span>
+
+                <span class="info-value">
+                    {{ order.order_time }}
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span class="info-label">
+                    Статус
+                </span>
+
+                <span class="info-value">
+                    Замовлення прийнято
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ИТОГО -->
+
+        <div class="total">
+
+            <span class="total-label">
+                Загальна сума
+            </span>
+
+            <span class="total-price">
+
+                {{ total_price }}
+
+                <span class="currency">
+                    грн
+                </span>
+
+            </span>
+
+        </div>
+
+
+        <!-- ОТМЕНА -->
+
+        <form
+            method="post"
+            action="/cancel_order/{{ order.id }}"
+            class="cancel-form"
+        >
+
+            <button
+                type="submit"
+                class="cancel-button"
+            >
+                СКАСУВАТИ ЗАМОВЛЕННЯ
+            </button>
+
+        </form>
+
+
+    </section>
+
+
+    <a
+        href="{{ url_for('menu') }}"
+        class="back-link"
+    >
+        ← Повернутися до меню
+    </a>
+
+
+</main>
+
+
+</body>
+</html>

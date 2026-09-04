@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Перевірка бронювань — Жемчужина Егейського моря</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #050505;
+            --black-light: #0c0c0c;
+            --gold: #d4af37;
+            --gold-light: #f4d76b;
+            --gold-dark: #927019;
+            --text: #f5f0df;
+            --muted: #969185;
+            --red: #b85c52;
+        }
+
+        body {
+            min-height: 100vh;
+
+            color: var(--text);
+
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(212, 175, 55, 0.07),
+                    transparent 35%
+                ),
+                var(--black);
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================
+           БОКОВЫЕ ЛИНИИ
+        ========================================= */
+
+        body::before,
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            top: 0;
+            bottom: 0;
+
+            width: 1px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    transparent,
+                    rgba(212, 175, 55, 0.3),
+                    rgba(212, 175, 55, 0.08),
+                    rgba(212, 175, 55, 0.3),
+                    transparent
+                );
+
+            pointer-events: none;
+
+            z-index: 10;
+        }
+
+        body::before {
+            left: 24px;
+        }
+
+        body::after {
+            right: 24px;
+        }
+
+
+        /* =========================================
+           ОСНОВНОЙ КОНТЕЙНЕР
+        ========================================= */
+
+        .page {
+
+            width: min(1200px, 88%);
+
+            margin: 0 auto;
+
+            padding:
+                65px 0 90px;
+        }
+
+
+        /* =========================================
+           ЗАГОЛОВОК
+        ========================================= */
+
+        .page-header {
+
+            text-align: center;
+
+            margin-bottom: 45px;
+        }
+
+        .small-title {
+
+            color: var(--gold);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 5px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 15px;
+        }
+
+        h1 {
+
+            color: var(--text);
+
+            font-size:
+                clamp(35px, 5vw, 52px);
+
+            font-weight: normal;
+        }
+
+        .gold-line {
+
+            position: relative;
+
+            width: 220px;
+
+            height: 1px;
+
+            margin: 25px auto;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold),
+                    transparent
+                );
+        }
+
+        .gold-line::before,
+        .gold-line::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 50%;
+
+            width: 7px;
+
+            height: 7px;
+
+            border:
+                1px solid
+                var(--gold);
+
+            transform:
+                translateY(-50%)
+                rotate(45deg);
+        }
+
+        .gold-line::before {
+            left: 25px;
+        }
+
+        .gold-line::after {
+            right: 25px;
+        }
+
+
+        .description {
+
+            color: var(--muted);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           ТАБЛИЦА
+        ========================================= */
+
+        .table-wrapper {
+
+            overflow-x: auto;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #11110f,
+                    #080808
+                );
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.3);
+
+            box-shadow:
+                0 20px 55px
+                rgba(0, 0, 0, 0.55);
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 750px;
+        }
+
+
+        /* =========================================
+           HEADER TABLE
+        ========================================= */
+
+        thead {
+
+            background:
+                rgba(212, 175, 55, 0.08);
+        }
+
+        th {
+
+            padding: 18px 16px;
+
+            color: var(--gold);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+            text-align: left;
+
+            border-bottom:
+                1px solid
+                rgba(212, 175, 55, 0.35);
+        }
+
+
+        /* =========================================
+           CELLS
+        ========================================= */
+
+        td {
+
+            padding: 18px 16px;
+
+            color: #d5d0c3;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 13px;
+
+            border-bottom:
+                1px solid
+                rgba(212, 175, 55, 0.12);
+        }
+
+
+        tbody tr {
+
+            transition:
+                background 0.25s ease;
+        }
+
+        tbody tr:hover {
+
+            background:
+                rgba(212, 175, 55, 0.045);
+        }
+
+        tbody tr:last-child td {
+
+            border-bottom: none;
+        }
+
+
+        /* =========================================
+           ID
+        ========================================= */
+
+        td:first-child {
+
+            color: var(--gold);
+
+            font-weight: bold;
+        }
+
+
+        /* =========================================
+           USERNAME
+        ========================================= */
+
+        td:nth-child(4) {
+
+            color: var(--text);
+
+            font-weight: bold;
+        }
+
+
+        /* =========================================
+           DELETE BUTTON
+        ========================================= */
+
+        .delete-button {
+
+            padding: 9px 16px;
+
+            color: #dca39c;
+
+            background:
+                rgba(184, 92, 82, 0.06);
+
+            border:
+                1px solid
+                rgba(184, 92, 82, 0.45);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            cursor: pointer;
+
+            transition: 0.3s ease;
+        }
+
+        .delete-button:hover {
+
+            color: #fff;
+
+            background:
+                var(--red);
+
+            border-color:
+                var(--red);
+
+            box-shadow:
+                0 0 18px
+                rgba(184, 92, 82, 0.2);
+        }
+
+
+        /* =========================================
+           EMPTY
+        ========================================= */
+
+        .empty {
+
+            padding: 60px 20px;
+
+            text-align: center;
+
+            color: var(--muted);
+
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        footer {
+
+            padding: 25px;
+
+            text-align: center;
+
+            color: #625f57;
+
+            background: #020202;
+
+            border-top:
+                1px solid
+                rgba(212, 175, 55, 0.18);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+        }
+
+        footer strong {
+
+            color: var(--gold);
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 700px) {
+
+            body::before {
+                left: 10px;
+            }
+
+            body::after {
+                right: 10px;
+            }
+
+            .page {
+
+                width: 88%;
+
+                padding-top: 45px;
+            }
+
+            h1 {
+
+                font-size: 34px;
+            }
+
+            .table-wrapper {
+
+                margin-top: 10px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+
+
+<main class="page">
+
+
+    <!-- ЗАГОЛОВОК -->
+
+    <section class="page-header">
+
+        <div class="small-title">
+            Адміністрування
+        </div>
+
+        <h1>
+            Перевірка бронювань
+        </h1>
+
+        <div class="gold-line"></div>
+
+        <p class="description">
+            Перегляд та керування бронюваннями столиків
+        </p>
+
+    </section>
+
+
+    <!-- ТАБЛИЦА -->
+
+    {% if all_reservations %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Час</th>
+
+                        <th>Тип столика</th>
+
+                        <th>Користувач</th>
+
+                        <th>Дія</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for res in all_reservations %}
+
+                        <tr>
+
+                            <td>
+                                #{{ res.id }}
+                            </td>
+
+                            <td>
+                                {{ res.time_start }}
+                            </td>
+
+                            <td>
+                                {{ res.type_table }}
+                            </td>
+
+                            <td>
+                                {{ res.user.nickname }}
+                            </td>
+
+                            <td>
+
+                                <form method="post">
+
+                                    <input
+                                        type="hidden"
+                                        name="csrf_token"
+                                        value="{{ csrf_token }}"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="reserv_id"
+                                        value="{{ res.id }}"
+                                    >
+
+                                    <button
+                                        type="submit"
+                                        class="delete-button"
+                                    >
+                                        ВИДАЛИТИ
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="table-wrapper">
+
+            <div class="empty">
+
+                <h2>
+                    Бронювань немає
+                </h2>
+
+                <p>
+                    На даний момент жодного столика не заброньовано.
+                </p>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</main>
+
+
+<footer>
+
+    <strong>
+        ✦ Жемчужина Егейського моря
+    </strong>
+
+    &nbsp; · &nbsp;
+
+    Панель адміністратора
+
+    &nbsp; · &nbsp;
+
+    © 2026
+
+</footer>
+
+
+</body>
+</html>

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Меню — Жемчужина Эгейского моря</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #050505;
+            --black-light: #0b0b0b;
+            --gold: #d4af37;
+            --gold-light: #f4d76b;
+            --gold-dark: #927019;
+            --text: #f5f0df;
+            --muted: #9b9689;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+
+            color: var(--text);
+
+            background:
+                radial-gradient(
+                    circle at 50% 10%,
+                    rgba(212, 175, 55, 0.07),
+                    transparent 35%
+                ),
+                #050505;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================
+           БОКОВЫЕ ЗОЛОТЫЕ ЛИНИИ
+        ========================================= */
+
+        body::before,
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            top: 0;
+            bottom: 0;
+
+            width: 1px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    transparent,
+                    rgba(212, 175, 55, 0.3),
+                    rgba(212, 175, 55, 0.08),
+                    rgba(212, 175, 55, 0.3),
+                    transparent
+                );
+
+            pointer-events: none;
+
+            z-index: 100;
+        }
+
+        body::before {
+            left: 24px;
+        }
+
+        body::after {
+            right: 24px;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        header {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 50;
+
+            min-height: 76px;
+
+            padding: 18px 7%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background:
+                rgba(5, 5, 5, 0.92);
+
+            border-bottom:
+                1px solid
+                rgba(212, 175, 55, 0.3);
+
+            backdrop-filter: blur(15px);
+        }
+
+
+        .logo {
+
+            color: var(--text);
+
+            text-decoration: none;
+
+            font-size: 21px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+        }
+
+        .logo-symbol {
+
+            color: var(--gold);
+
+            margin-right: 7px;
+        }
+
+        .gold {
+            color: var(--gold);
+        }
+
+
+        /* =========================================
+           NAVIGATION
+        ========================================= */
+
+        nav {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        nav a {
+
+            padding: 9px 15px;
+
+            color: #d8d4c8;
+
+            text-decoration: none;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 12px;
+
+            transition: 0.3s ease;
+        }
+
+        nav a:hover {
+
+            color: var(--gold-light);
+        }
+
+
+        .nav-button {
+
+            border:
+                1px solid
+                var(--gold);
+
+            color:
+                var(--gold) !important;
+        }
+
+        .nav-button:hover {
+
+            background: var(--gold);
+
+            color: #050505 !important;
+        }
+
+
+        /* =========================================
+           ЗАГОЛОВОК
+        ========================================= */
+
+        .menu-header {
+
+            position: relative;
+
+            text-align: center;
+
+            padding:
+                75px 20px 55px;
+        }
+
+
+        .small-title {
+
+            color: var(--gold);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 5px;
+
+            text-transform: uppercase;
+        }
+
+
+        .menu-header h1 {
+
+            margin-top: 17px;
+
+            color: var(--text);
+
+            font-size:
+                clamp(42px, 6vw, 65px);
+
+            line-height: 1.1;
+        }
+
+
+        .menu-header p {
+
+            max-width: 600px;
+
+            margin:
+                20px auto 0;
+
+            color: var(--muted);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================================
+           ЗОЛОТАЯ ЛИНИЯ
+        ========================================= */
+
+        .gold-line {
+
+            position: relative;
+
+            width: 220px;
+
+            height: 1px;
+
+            margin: 25px auto;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold),
+                    transparent
+                );
+        }
+
+        .gold-line::before,
+        .gold-line::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 50%;
+
+            width: 7px;
+
+            height: 7px;
+
+            border:
+                1px solid
+                var(--gold);
+
+            transform:
+                translateY(-50%)
+                rotate(45deg);
+        }
+
+        .gold-line::before {
+            left: 25px;
+        }
+
+        .gold-line::after {
+            right: 25px;
+        }
+
+
+        /* =========================================
+           МЕНЮ
+        ========================================= */
+
+        .menu-container {
+
+            width: min(1250px, 88%);
+
+            margin:
+                0 auto 90px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(280px, 1fr)
+                );
+
+            gap: 35px;
+        }
+
+
+        /* =========================================
+           КАРТОЧКА БЛЮДА
+        ========================================= */
+
+        .dish {
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #11110f,
+                    #080808
+                );
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.22);
+
+            transition:
+                transform 0.35s ease,
+                border-color 0.35s ease,
+                box-shadow 0.35s ease;
+        }
+
+
+        .dish:hover {
+
+            transform:
+                translateY(-8px);
+
+            border-color:
+                rgba(212, 175, 55, 0.75);
+
+            box-shadow:
+                0 18px 45px
+                rgba(0, 0, 0, 0.65),
+
+                0 0 25px
+                rgba(212, 175, 55, 0.08);
+        }
+
+
+        /* =========================================
+           ЗОЛОТАЯ ЛИНИЯ В КАРТОЧКЕ
+        ========================================= */
+
+        .dish::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            right: 0;
+
+            top: 0;
+
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold),
+                    transparent
+                );
+
+            opacity: 0;
+
+            transition: 0.35s ease;
+
+            z-index: 2;
+        }
+
+        .dish:hover::before {
+
+            opacity: 1;
+        }
+
+
+        /* =========================================
+           ФОТО
+        ========================================= */
+
+        .dish-image {
+
+            position: relative;
+
+            width: 100%;
+
+            height: 260px;
+
+            overflow: hidden;
+
+            background: #111;
+        }
+
+        .dish-image img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+            transition:
+                transform 0.5s ease;
+        }
+
+        .dish:hover .dish-image img {
+
+            transform: scale(1.06);
+        }
+
+
+        .dish-image::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(5, 5, 5, 0.55),
+                    transparent 45%
+                );
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================
+           ИНФОРМАЦИЯ
+        ========================================= */
+
+        .dish-content {
+
+            padding:
+                25px 25px 28px;
+        }
+
+
+        .dish h2 {
+
+            color: var(--text);
+
+            font-size: 25px;
+
+            line-height: 1.2;
+
+            margin-bottom: 14px;
+        }
+
+
+        .dish h2::after {
+
+            content: "";
+
+            display: block;
+
+            width: 45px;
+
+            height: 1px;
+
+            margin-top: 12px;
+
+            background: var(--gold);
+        }
+
+
+        .ingredients {
+
+            min-height: 58px;
+
+            color: var(--muted);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            margin-bottom: 22px;
+        }
+
+
+        /* =========================================
+           КНОПКА
+        ========================================= */
+
+        .details {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 100%;
+
+            padding: 13px 18px;
+
+            color: var(--gold);
+
+            text-decoration: none;
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.55);
+
+            background:
+                rgba(212, 175, 55, 0.025);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 1.5px;
+
+            transition: 0.3s ease;
+        }
+
+        .details:hover {
+
+            color: #050505;
+
+            background: var(--gold);
+
+            border-color: var(--gold);
+
+            box-shadow:
+                0 0 20px
+                rgba(212, 175, 55, 0.18);
+        }
+
+
+        /* =========================================
+           ЕСЛИ МЕНЮ ПУСТОЕ
+        ========================================= */
+
+        .empty-menu {
+
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            padding: 80px 20px;
+
+            color: var(--muted);
+
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        footer {
+
+            position: relative;
+
+            padding: 30px 20px;
+
+            text-align: center;
+
+            color: #656158;
+
+            background: #020202;
+
+            border-top:
+                1px solid
+                rgba(212, 175, 55, 0.18);
+
+            font-family: Arial, sans-serif;
+
+            font-size: 12px;
+        }
+
+        footer::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 15%;
+            right: 15%;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold),
+                    transparent
+                );
+        }
+
+        footer strong {
+
+            color: var(--gold);
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 700px) {
+
+            body::before {
+                left: 10px;
+            }
+
+            body::after {
+                right: 10px;
+            }
+
+            header {
+
+                padding:
+                    16px 20px;
+
+                flex-direction: column;
+
+                gap: 12px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            nav a {
+                font-size: 11px;
+            }
+
+            .menu-header {
+
+                padding-top: 55px;
+            }
+
+            .menu-container {
+
+                width: 88%;
+
+                grid-template-columns: 1fr;
+
+                gap: 25px;
+            }
+
+            .dish-image {
+
+                height: 230px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<header>
+
+    <a
+        href="{{ url_for('home') }}"
+        class="logo"
+    >
+
+        <span class="logo-symbol">
+            ✦
+        </span>
+
+        Жемчужина
+
+        <span class="gold">
+            Эгейского моря
+        </span>
+
+    </a>
+
+
+    <nav>
+
+        <a href="{{ url_for('home') }}">
+            Головна
+        </a>
+
+        <a
+            href="{{ url_for('login') }}"
+        >
+            Вхід
+        </a>
+
+        <a
+            href="{{ url_for('register') }}"
+            class="nav-button"
+        >
+            Реєстрація
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =========================================
+     ЗАГОЛОВОК
+========================================= -->
+
+<section class="menu-header">
+
+    <div class="small-title">
+        Грецька кухня
+    </div>
+
+
+    <h1>
+        Наше меню
+    </h1>
+
+
+    <div class="gold-line"></div>
+
+
+    <p>
+        Свіжі морепродукти, традиційні
+        грецькі рецепти та справжній
+        смак Егейського моря.
+    </p>
+
+</section>
+
+
+
+<!-- =========================================
+     СПИСОК БЛЮД
+========================================= -->
+
+<main class="menu-container">
+
+    {% if all_positions %}
+
+        {% for position in all_positions %}
+
+            <article class="dish">
+
+
+                <div class="dish-image">
+
+                    <img
+                        src="/static/menu/{{ position.file_name }}"
+                        alt="{{ position.name }}"
+                    >
+
+                </div>
+
+
+                <div class="dish-content">
+
+
+                    <h2>
+                        {{ position.name }}
+                    </h2>
+
+
+                    <p class="ingredients">
+                        {{ position.ingredients }}
+                    </p>
+
+
+                    <a
+                        href="/position/{{ position.name }}"
+                        class="details"
+                    >
+
+                        ОГЛЯНУТИ ДЕТАЛЬНІШЕ
+                        &nbsp; →
+
+                    </a>
+
+
+                </div>
+
+            </article>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-menu">
+
+            <h2>
+                Меню поки що порожнє
+            </h2>
+
+            <p>
+                Незабаром тут з'являться
+                наші фірмові страви.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</main>
+
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer>
+
+    <strong>
+        ✦ Жемчужина Эгейского моря
+    </strong>
+
+    &nbsp; · &nbsp;
+
+    Грецький ресторан
+
+    &nbsp; · &nbsp;
+
+    © 2026
+
+</footer>
+
+
+</body>
+</html>
